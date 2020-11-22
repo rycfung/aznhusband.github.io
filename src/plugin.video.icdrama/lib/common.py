@@ -51,7 +51,8 @@ def diritem(label_or_stringid, url, image='', isfolder=True, context_menu=[]):
         label = xbmcaddon.Addon().getLocalizedString(label_or_stringid)
     else:
         label = label_or_stringid
-    listitem = xbmcgui.ListItem(label, iconImage=image)
+    listitem = xbmcgui.ListItem(label) #, iconImage=image) removed in Kodi 19
+    listitem.setArt({ 'icon' : image})
     listitem.addContextMenuItems(context_menu, replaceItems=True)
     # this is unpackable for xbmcplugin.addDirectoryItem
     return dict(
