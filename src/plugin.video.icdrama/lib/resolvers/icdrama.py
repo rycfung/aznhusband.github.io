@@ -1,7 +1,7 @@
 import re
 import json
 from urllib import unquote
-from urlparse import urlparse
+from urlparse import urlparse, urljoin
 import base64
 import requests
 from bs4 import BeautifulSoup
@@ -12,8 +12,8 @@ from resolveurl.plugins.lib import helpers
 
 class Icdrama(ResolveUrl):
     name = 'Icdrama'
-    domains = [ 'adrama.to', 'icdrama.se', 'icdrama.to']
-    pattern = '(?://|\.)(adrama\.to|icdrama\.se|icdrama\.to)/(.+)'
+    domains = [ 'hkdrama.to','adrama.to', 'icdrama.se', 'icdrama.to']
+    pattern = '(?://|\.)(hkdrama\.to|adrama\.to|icdrama\.se|icdrama\.to)/(.+)'
 
 
     def __init__(self):
@@ -46,8 +46,12 @@ class Icdrama(ResolveUrl):
         else:
             try:
                 html   = self.net.http_GET(url, headers=self.headers).content
-                iframe = BeautifulSoup(html, 'html5lib').find('iframe')
-                return resolveurl.resolve(iframe['src'])
+                iframe = BeautifulSoup(html, 'html5lib').find(id='iframeplayer')
+                if iframe:
+                    iframe_url = urljoin(self.get_url(host,''), iframe['src'])
+                    return resolveurl.resolve(iframe_url)
+                else:
+                    return None
             except:
                 return None
 
