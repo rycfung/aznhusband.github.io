@@ -25,7 +25,7 @@ class Icdrama(ResolveUrl):
         url = self.get_url(host, media_id)
         if 'vidembed' in url or 'vb.icdrama' in url:
             headers = self.headers
-            headers['Referer'] = 'http://icdrama.to'
+            headers['Referer'] = 'http://hkdrama.to'
 
             response = requests.get(url, headers=headers)
 
