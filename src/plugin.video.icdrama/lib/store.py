@@ -1,4 +1,4 @@
-import cPickle as pickle
+import pickle
 from os import makedirs
 from lib import config
 from os.path import isfile, dirname, exists

@@ -1,7 +1,6 @@
 import re
 import json
-from urllib import unquote
-from urlparse import urlparse
+from urllib.parse import unquote, urlparse
 import base64
 import requests
 from bs4 import BeautifulSoup
@@ -290,7 +289,7 @@ class Videobug(ResolveUrl):
             re_flash = re.compile(r"video *= *{[^:]+: *'(.*?)' *}")
             re_html5 = re.compile(r'<source.*?src=\"(.*?)\"')
             urls = [(re_flash.findall(fb) or re_html5.findall(fb))[0] for fb in func_bodies]
-            streams = zip(labels, urls)
+            streams = list(zip(labels, urls))
         except Exception:
             pass
         return streams

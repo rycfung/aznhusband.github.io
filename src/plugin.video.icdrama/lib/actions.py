@@ -1,6 +1,6 @@
 import xbmc
 import xbmcgui
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import functools
 import xbmcaddon
 from resolveurl.lib.net import get_ua
@@ -100,7 +100,7 @@ def search(url=None):
         heading = xbmcaddon.Addon().getLocalizedString(33301)
         s = common.input(heading)
         if s:
-            url = config.search_url % urllib.quote(s.encode('utf8'))
+            url = config.search_url % urllib.parse.quote(s.encode('utf8'))
         else:
             return []
     di_list = []
@@ -177,7 +177,7 @@ def play_mirror(url):
             # li.setThumbnailImage(image) removed in Kodi 19
             li.setArt({ 'thumb' : image})
             if 'User-Agent=' not in vidurl:
-                vidurl = vidurl + '|User-Agent=' + urllib.quote(get_ua())
+                vidurl = vidurl + '|User-Agent=' + urllib.parse.quote(get_ua())
             xbmc.Player().play(vidurl, li)
 
 @_dir_action

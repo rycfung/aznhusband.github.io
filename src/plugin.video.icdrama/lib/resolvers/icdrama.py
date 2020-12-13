@@ -1,7 +1,6 @@
 import re
 import json
-from urllib import unquote
-from urlparse import urlparse, urljoin
+from urllib.parse import unquote, urlparse, urljoin
 import base64
 import requests
 from bs4 import BeautifulSoup
@@ -31,11 +30,14 @@ class Icdrama(ResolveUrl):
 
             unwrapped_url = ''
             if 'videoredirect.php?' in url: #for current Openload source & other possible redirects
-                unwrapped_url = response.url
+                unwrapped_url = response.url #should be a unicode string
             else:
-                streams = self._extract_streams(response)
+                streams = self._extract_streams(response) #contains byte strings
                 unwrapped_url = helpers.pick_source(streams, auto_pick=False)
-
+                
+            if type(unwrapped_url) is bytes: #return to unicode strings for compatibility
+                unwrapped_url = unwrapped_url.decode('utf8') 
+                
             if ('redirector.googlevideo.com' in unwrapped_url or
                 'blogspot.com' in unwrapped_url or
                 'fbcdn.net' in unwrapped_url): #for current Videobug source
@@ -73,7 +75,7 @@ class Icdrama(ResolveUrl):
         if response.status_code != 200:
             return streams
 
-        html = response.content
+        html = response.text # using default response encoding; should be utf-8
         post_url = self._get_post_url(html)
         data = self._get_post_data(html)
 

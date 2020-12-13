@@ -1,6 +1,5 @@
 import sys
-from urlparse import parse_qsl
-from urllib import unquote
+from urllib.parse import parse_qsl, unquote
 from lib import actions
 
 if __name__ == '__main__':
